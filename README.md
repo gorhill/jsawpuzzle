@@ -21,6 +21,7 @@ The extension is Manifest V3-compliant.
 The extension can fetch random pictures from different feeds. Currently it can fetch from [Wikimedia Commons](https://commons.wikimedia.org/) and [Public Domain Pictures](https://www.publicdomainpictures.net/).
 
 **Important:** Firefox version 126.0 and below requires that you explicitly grant permissions to be able fetch pictures from remote servers:
+
 ![image](https://github.com/gorhill/jsawpuzzle/assets/585534/d4c2b4c6-4c56-4154-b276-8e62fb90aeb5)
 
 ## To build the extension
