@@ -16,7 +16,7 @@ chromium: build/jsawpuzzle.chromium
 
 # Build the extension for Opera.
 build/jsawpuzzle.firefox: tools/make-firefox.sh $(sources) $(platform)
-	tools/make-firefox.sh all
+	tools/make-firefox.sh
 
 # Build the extension for Firefox.
 firefox: build/jsawpuzzle.firefox
