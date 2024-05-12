@@ -1,0 +1,58 @@
+name: New release
+
+on:
+  create:
+    branches: main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      contents: write # for creating release
+    name: Build packages
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+      - name: Get release information
+        id: release_info
+        run: |
+          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Create GitHub release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: ${{ steps.release_info.outputs.VERSION }}
+          release_name: ${{ steps.release_info.outputs.VERSION }}
+          draft: true
+          prerelease: true
+      - name: Build extension packages
+        run: |
+          tools/make-chromium.sh ${{ steps.release_info.outputs.VERSION }}
+          tools/make-firefox.sh ${{ steps.release_info.outputs.VERSION }}
+      - name: Upload Chromium package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/jsawpuzzle_${{ steps.release_info.outputs.VERSION }}.chromium.zip
+          asset_name: jsawpuzzle_${{ steps.release_info.outputs.VERSION }}.chromium.zip
+          asset_content_type: application/octet-stream
+      - name: Upload Firefox package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/jsawpuzzle_${{ steps.release_info.outputs.VERSION }}.firefox.xpi
+          asset_name: jsawpuzzle_${{ steps.release_info.outputs.VERSION }}.firefox.xpi
+          asset_content_type: application/octet-stream
