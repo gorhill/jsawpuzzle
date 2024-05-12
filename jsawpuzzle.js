@@ -1598,7 +1598,15 @@ export class Puzzle {
             x: (canvasWidth - bedWidth) / 2,
             y: (canvasHeight - bedHeight) / 2,
         };
-        const module = await import(`./tesselations/${this.config.cut}.js`);
+        let module;
+        switch ( this.config.cut ) {
+        case 'hexagon':
+            module = await import('./tesselations/hexagon.js');
+            break;
+        case 'square':
+            module = await import('./tesselations/square.js');
+            break;
+        }
         const { numRotateSteps } = this.config;
         const attachmentStraight = Attachment.create(Attachment.stock.straight);
         const minDistance = maxFn(

@@ -326,7 +326,18 @@ fromLocalStorage('pictureset').then(s => {
 });
 
 async function fetchRandomPicture(source) {
-    const module = await import(`./feeds/${source}.js`);
+    let module;
+    switch ( source ) {
+    case 'wikimedia-commons-featured':
+        module = await import(`./feeds/wikimedia-commons-featured.js`);
+        break;
+    case 'wikimedia-commons-potd':
+        module = await import(`./feeds/wikimedia-commons-potd.js`);
+        break;
+    case 'publicdomainpictures':
+        module = await import(`./feeds/publicdomainpictures.js`);
+        break;
+    }
     const picture = await module.getRandomPicture();
     if ( picture instanceof Object === false ) { return; }
     picture.time = Date.now();
