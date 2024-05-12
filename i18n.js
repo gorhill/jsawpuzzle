@@ -20,6 +20,8 @@
  * 
  * */
 
+import { safeInsertAdjacentHTML } from './dom-utils.js';
+
 /******************************************************************************/
 
 const browser = self.browser || self.chrome;
@@ -30,10 +32,7 @@ document.body.setAttribute('dir', i18n$('@@bidi_dir'));
 for ( const elem of document.querySelectorAll('[data-i18n]') ) {
     const text = i18n$(elem.dataset.i18n);
     if ( Boolean(text) === false ) { continue; }
-    if ( text.indexOf('{{') === -1 ) {
-        elem.insertAdjacentHTML('afterbegin', text);
-        continue;
-    }
+    safeInsertAdjacentHTML(elem, 'afterbegin', text);
 }
 
 for ( const elem of document.querySelectorAll('[label]') ) {

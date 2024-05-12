@@ -24,6 +24,7 @@
 
 import * as s14e from './s14e-serializer.js';
 import { Point, Puzzle } from './jsawpuzzle.js';
+import { safeInsertAdjacentHTML } from './dom-utils.js';
 
 /******************************************************************************/
 
@@ -297,7 +298,7 @@ function populatePictureset() {
         sourceLink.href = picture.sourceURL;
         sourceLink.textContent = picture.sourceURL;
         const caption = figure.querySelector('figcaption');
-        caption.insertAdjacentHTML('afterbegin', picture.caption);
+        safeInsertAdjacentHTML(caption, 'afterbegin', picture.caption);
         fragment.append(figure);
     }
     container.prepend(fragment);
