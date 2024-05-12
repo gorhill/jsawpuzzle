@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <title>JSaw Puzzle by Raymond Hill</title>
+  <link rel="stylesheet" href="./jsawpuzzle.css">
+</head>
+
+<body class="nojs">
+  <header id="navbar">
+    <!-- Menu items -->
+    <div class="menuroot">
+      <span class="menulabel" tabindex="0" data-i18n="s100"></span>
+      <ul class="menu" id="theMenu">
+        <!-- Picture -->
+        <li class="menuitem" tabindex="0">
+          <span class="menulabel" data-i18n="s200"></span>
+          <section class="submenu">
+            <h3 data-i18n="s201"></h3>
+            <p data-i18n="s202"></p>
+            <div class="paneGrid">
+              <select id="pictureFeed">
+                <option value="wikimedia-commons-featured" data-i18n="s203"></option>
+                <option value="wikimedia-commons-potd" data-i18n="s205"></option>
+                <option value="publicdomainpictures" data-i18n="s209"></option>
+              </select>
+              <button id="pictureFetch" type="button" data-i18n="s204"></button>
+              <span data-i18n="s206"></span>
+              <span>
+                <input id="puzzleMysteryCheckbox" type="checkbox" /><label data-i18n="s207" for="puzzleMysteryCheckbox"></label>
+              </span>
+            </div>
+            <p data-i18n="s208"></p>
+            <div id="puzzlePictures"></div>
+          </section>
+        <!-- Puzzle -->
+        <li class="menuitem" tabindex="0">
+          <span class="menulabel" data-i18n="s300"></span>
+          <section class="submenu">
+            <h3 data-i18n="s301"></h3>
+            <div id="createPane" class="paneGrid">
+              <span data-i18n="s302"></span>
+              <select id="puzzleCut">
+                <option value="square" data-i18n="s303">
+                <option value="hexagon" data-i18n="s304">
+              </select>
+              <span data-i18n="s305"></span>
+              <select id="puzzleAttachment">
+                <option value="classic" data-i18n="s306">
+                <option value="tenon" data-i18n="s307">
+                <option value="wave" data-i18n="s308">
+                <option value="straight" data-i18n="s309">
+              </select>
+              <span data-i18n="s310"></span>
+              <span>
+                <span class="rangeWidget">
+                  <input id="puzzleNumPieces" type="range"  min="0" max="6" step="0.25" list="piecesValues" />
+                  <datalist id="piecesValues">
+                    <option value="0" label="15"></option>
+                    <option value="1" label="30"></option>
+                    <option value="2" label="60"></option>
+                    <option value="3" label="120"></option>
+                    <option value="4" label="240"></option>
+                    <option value="5" label="480"></option>
+                    <option value="6" label="960"></option>
+                  </datalist>
+                </span>&emsp;
+                <span id="puzzleNumPiecesLabel"></span>
+              </span>
+              <span data-i18n="s311"></span>
+              <span>
+                <span class="rangeWidget">
+                  <input id="puzzleDistortion" type="range" min="0" max="9"  list="distortionValues" />
+                  <datalist id="distortionValues">
+                    <option value="0" label="s319"></option>
+                    <option value="9" label="s320"></option>
+                  </datalist>
+                </span>
+              </span>
+              <span data-i18n="s312"></span>
+              <select id="puzzleRotate">
+                <option value="1" data-i18n="s313"></option>
+                <option value="2" data-i18n="s314"></option>
+                <option value="4" data-i18n="s315"></option>
+                <option value="24" data-i18n="s316"></option>
+              </select>
+              <span>
+                <button id="puzzleCreate" type="button" data-i18n="s317"></button>
+              </span>
+              <span>
+                <span class="hint" data-i18n="s318"></span>
+              </span>
+            </div>
+          </section>
+        <!-- Settings -->
+        <li class="menuitem" tabindex="0">
+          <span class="menulabel" data-i18n="s400"></span>
+          <section class="submenu">
+            <h3 data-i18n="s401"></h3>
+            <div class="paneGrid">
+              <span data-i18n="s402"></span>
+              <span>
+                <span class="rangeWidget">
+                  <input id="puzzleSnapDistance" type="range" min="3" max="15"  list="distanceValues" />
+                  <datalist id="distanceValues">
+                    <option value="3" label="3"></option>
+                    <option value="6" label="6"></option>
+                    <option value="9" label="9"></option>
+                    <option value="12" label="12"></option>
+                    <option value="15" label="15"></option>
+                  </datalist>
+                </span>
+              </span>
+              <span data-i18n="s403"></span>
+              <span>
+                <input id="backgroundColor" type="color" />
+              </span>
+              <span data-i18n="s404"></span>
+              <span id="backgroundPatterns">
+                <input name="backgroundPattern" type="radio" value="0" />
+                <input name="backgroundPattern" type="radio" value="1" style="--bg-image: url('images/background-pattern-1.png');" />
+                <input name="backgroundPattern" type="radio" value="2" style="--bg-image: url('images/background-pattern-2.png');" />
+                <input name="backgroundPattern" type="radio" value="3" style="--bg-image: url('images/background-pattern-3.png');" />
+              </span>
+              <span data-i18n="s405"></span>
+              <span>
+                <input id="puzzleContextMenu" type="checkbox" />
+              </span>
+              <span data-i18n="s406"></span>
+              <span>
+                <input id="puzzleApplause" type="checkbox" />
+              </span>
+            </div>
+          </section>
+        <!-- Info -->
+        <li class="menuitem" tabindex="0">
+          <span class="menulabel" data-i18n="s500"></span>
+          <section class="submenu">
+            <h3 data-i18n="s501"></h3>
+            <span id="puzzlePieceCount"></span>
+            <h3 data-i18n="s502"></h3>
+            <ul>
+              <li data-i18n="s503">
+              <li data-i18n="s504">
+              <li data-i18n="s505">
+              <li data-i18n="s506">
+              <li data-i18n="s507"><br><span class="hint" data-i18n="s508"></span>
+              <li data-i18n="s509">
+              <li data-i18n="s510">
+              <li data-i18n="s511">
+            </ul>
+          </section>
+        <!-- About -->
+        <li class="menuitem" tabindex="0">
+          <span class="menulabel" data-i18n="s600"></span>
+          <section class="submenu">
+            <p><a href="https://github.com/gorhill/jsawpuzzle">JSawpuzzle</a> 1.0 Copyright (c) 2024 Raymond Hill</p>
+            <blockquote class="smaller">
+              <p>This program is free software: you can redistribute it and/or modify
+              it under the terms of the GNU General Public License as published by
+              the Free Software Foundation, either version 3 of the License, or
+              (at your option) any later version.</p>
+              <p>This program is distributed in the hope that it will be useful,
+              but WITHOUT ANY WARRANTY; without even the implied warranty of
+              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+              GNU General Public License for more details.</p>
+              <p>You should have received a copy of the GNU General Public License
+              along with this program.  If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+            </blockquote>
+            <p data-i18n="s601"></p>
+            <ul>
+              <li data-i18n="s602">
+                <ul>
+                  <li><a href="https://commons.wikimedia.org/wiki/File:Cape_Town_(ZA),_Wale_Street_--_2024_--_3544.jpg">&ldquo;Colorful houses in Wale Street, Cape Town, Western Cape, South Africa (2024)&rdquo;</a>, <a href="https://www.wikidata.org/wiki/Q34788025">Dietmar Rabich</a></li>
+                </ul>
+              </li>
+              <li data-i18n="s603">
+                <ul class="smaller">
+                  <li><a href="http://www.freesound.org/">The Freesound Project</a>'s <a href="http://www.freesound.org/samplesViewSingle.php?id=12842">&ldquo;klick - 01.wav&rdquo;</a>, <a href="http://www.freesound.org/usersViewSingle.php?id=4942">Marcus Horndt</a></li>
+                  <li><a href="http://www.freesound.org/">The Freesound Project</a>'s <a href="http://www.freesound.org/samplesViewSingle.php?id=12843">&ldquo;klick - 02.wav&rdquo;</a>, <a href="http://www.freesound.org/usersViewSingle.php?id=4942">Marcus Horndt</a></li>
+                  <li><a href="http://www.freesound.org/">The Freesound Project</a>'s <a href="http://www.freesound.org/samplesViewSingle.php?id=35102">&ldquo;applause_5sec.wav&rdquo;</a>, <a href="http://www.freesound.org/usersViewSingle.php?id=140756">Mirko Horstmann</a></li>
+                  <li><a href="http://www.freesound.org/">The Freesound Project</a>'s <a href="http://www.freesound.org/samplesViewSingle.php?id=35104">&ldquo;applause_5sec.wav&rdquo;</a>, <a href="http://www.freesound.org/usersViewSingle.php?id=140756">Mirko Horstmann</a></li>
+                  <li><a href="http://www.freesound.org/">The Freesound Project</a>'s <a href="http://www.freesound.org/samplesViewSingle.php?id=60789">&ldquo;Applause 9s.mp3&rdquo;</a>, <a href="http://www.freesound.org/usersViewSingle.php?id=199526">J.Zazvurek</a></li>
+                </ul>
+              </li>
+              <li data-i18n="s604">
+                <ul>
+                  <li><a href="https://paulbourke.net/geometry/polygonmesh/">&ldquo;Calculating the area and centroid of a polygon&rdquo;</a>, <a href="https://paulbourke.net/">Paul Bourke</a></li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+      </ul>
+    </div>
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <span class="iconifiedCheckbox" title="s102">
+        <input type="checkbox" checked id="puzzleShowEdges" />
+        <img src="./images/puzzle-edges-unselected.png" alt="s102" />
+      </span>
+      <span class="iconifiedCheckbox" title="s103">
+        <input type="checkbox" checked id="puzzleShowNonedges" />
+        <img src="./images/puzzle-notedges-unselected.png" alt="s103" />
+      </span>
+      <span class="iconifiedCheckbox" title="s104">
+        <input type="checkbox" checked id="puzzleShowComposites" />
+        <img src="./images/puzzle-composites-unselected.png" alt="s104">
+      </span>
+      <span class="iconifiedCheckbox" title="s105">
+        <input type="checkbox" id="puzzleShowPreview" />
+        <img src="./images/puzzle-preview-unselected.png" alt="s105" />
+      </span>
+    </div>
+    <div id="menuToggler" class="menuToggler"></div>
+  </header>
+
+  <div id="puzzleParent">
+    <canvas id="puzzleCanvas"></canvas>
+  </div>
+
+  <div id="templates" class="hidden">
+    <figure class="pictureItem">
+      <img src="#" alt="Click to create a puzzle from this image" loading="lazy" />
+      <figcaption>
+        <span data-i18n="s101"> <a href="#"></a></span>
+      </figcaption>
+      <del>&#x1F5D1;</del>
+    </figure>
+  </div>
+
+  <script src="./i18n.js" type="module" async></script>
+  <script src="./jsawpuzzle-ui.js" type="module" async></script>
+</body>
+
+</html>

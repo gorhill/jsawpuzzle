@@ -1,0 +1,41 @@
+{
+  "action": {
+    "default_icon": {
+      "128": "/images/icon-128.png",
+      "64": "/images/icon-64.png",
+      "16": "/images/icon-16.png"
+    }
+  },
+  "author": "Raymond Hill",
+  "background": {
+    "scripts": [ "background.js" ]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "jsawpuzzle@raymondhill.net",
+      "strict_min_version": "125.0"
+    }
+  },
+  "default_locale": "en",
+  "description": "__MSG_extShortDesc__",
+  "host_permissions": [
+      "https://commons.wikimedia.org/*",
+      "https://*.publicdomainpictures.net/*"
+  ],
+  "icons": {
+    "16": "/images/icon-16.png",
+    "64": "/images/icon-64.png",
+    "128": "/images/icon-128.png"
+  },
+  "manifest_version": 3,
+  "name": "JSaw Puzzle",
+  "options_ui": {
+    "page": "jsawpuzzle.html",
+    "open_in_tab": true
+  },
+  "permissions": [
+    "contextMenus",
+    "storage"
+  ],
+  "version": "1.0"
+}

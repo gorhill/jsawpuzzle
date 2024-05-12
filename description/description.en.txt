@@ -1,0 +1,5 @@
+Create and solve jigsaw puzzles.
+
+Fetch random images from Wikimedia Commons or Public Domain Pictures.
+
+Pick your own jigsaw puzzle parameters.

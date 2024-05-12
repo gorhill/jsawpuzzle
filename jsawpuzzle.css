@@ -1,0 +1,348 @@
+﻿body {
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+    font-size: 16px;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+}
+body[data-status="preparing"] * {
+    cursor: wait;
+}
+body[data-status="preparing"] .menu {
+    visibility: collapse;
+}
+
+section > :first-child {
+    margin-top: 0;
+}
+
+kbd {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 0 4px;
+}
+
+li {
+    padding: 0.25em 0;
+}
+
+figcaption a {
+    word-break: break-all;
+}
+
+.hidden {
+    display: none;
+}
+
+.hint {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.toolbar {
+    display: flex;
+    gap: 1em;
+}
+
+header {
+    background-color: antiquewhite;
+    display: flex;
+    padding: 2px;
+    position: absolute;
+}
+body.nojs header {
+    display: none;
+}
+header.collapsed:not(:hover,:focus-within) > :not(#menuToggler) {
+    max-width: 0;
+    visibility: hidden;
+}
+
+.smaller {
+    font-size: smaller;
+}
+
+.menuroot {
+    display: flex;
+    position: relative;
+}
+.menuroot:hover .menu,
+.menuroot:focus-within .menu {
+    display: flex;
+}
+.menuroot:focus-within > .menulabel {
+    font-weight: bold;
+}
+
+.menu {
+    background-color: antiquewhite;
+    box-shadow: 0px 0px 8px #888;
+    display: none;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 100%;
+    z-index: 100;
+}
+.menu > .menuitem {
+    list-style: none;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+.menuroot > .menulabel,
+.menuitem > .menulabel {
+    align-items: center;
+    display: inline-flex;
+    font-size: large;
+    min-width: 8em;
+    padding: 0.5em 1em;
+}
+.menuroot > .menulabel:hover,
+.menuitem:hover {
+    background-color: #0001;
+}
+section {
+    background-color: antiquewhite;
+    box-shadow: 0px 0px 8px #888;
+    border: 1px solid gray;
+    display: none;
+    max-height: 75vh;
+    min-height: 100%;
+    min-width: min(600px, 70vw);
+    padding: 0 1em;
+    overflow: auto;
+    padding: 1em;
+    position: absolute;
+    top: 0;
+}
+.menu:not(:focus-within) > li:hover section.submenu,
+.menu:focus-within > li:focus-within section.submenu {
+    display: inline-block;
+}
+.menu:focus-within > li:focus-within .menulabel {
+    font-weight: bold;
+}
+.menuitem:focus-within > .menulabel {
+    font-weight: bold;
+}
+
+.paneGrid {
+    display: grid;
+    gap: 1em 2em;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-items: start;
+}
+.paneGrid > span {
+    align-items: center;
+    display: inline-flex;
+}
+input:not([type="range"]),
+select,
+button {
+    box-sizing: border-box;
+    font-size: medium;
+    max-height: 2em;
+    min-height: 2em;
+    min-width: 16em;
+}
+button {
+    min-width: 12em;
+}
+.paneGrid input[type="checkbox"] {
+    margin: 0 1em 0 0;
+    min-width: 2em;
+}
+.paneGrid input[type="range"] {
+    min-width: 20em;
+}
+.paneGrid input[type="range"] + datalist {
+    display: flex;
+    font-size: 11px;
+    justify-content: space-between;
+}
+
+#puzzleNumPiecesLabel {
+    display: inline-flex;
+    align-self: stretch;
+    align-items: center;
+    border: 1px solid darkgray;
+    padding: 0 0.5em;
+}
+
+#puzzlePictures {
+    border-top: 1px dotted gray;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding-block-start: 1em;
+}
+#puzzlePictures figure {
+    margin: 0;
+    position: relative;
+}
+#puzzlePictures figure > img {
+    cursor: pointer;
+    float: left;
+    height: auto;
+    margin-inline-end: 1em;
+    max-width: 300px;
+    width: auto;
+}
+body[data-mystery="1"] #puzzlePictures figure:not([data-solved]) > img {
+    filter: brightness(0);
+}
+#puzzlePictures figure > figcaption {
+    display: flex;
+    flex-direction: column;
+    font-size: smaller;
+    gap: 1em;
+}
+body[data-mystery="1"] #puzzlePictures figure:not([data-solved]) > figcaption {
+    filter: blur(6px);
+    pointer-events: none;
+}
+figcaption > *:last-of-type {
+    font-size: small;
+}
+figure del {
+    background-color: antiquewhite;
+    bottom: 0;
+    cursor: pointer;
+    display: none;
+    font-size: 3em;
+    justify-content: flex-end;
+    padding-inline-start: 0.5em;
+    position: absolute;
+    right: 0;
+    text-decoration: none;
+    user-select: none;
+}
+#puzzlePictures figure:not([data-hash^="stock"]):hover del {
+    display: inline-flex;
+}
+#puzzlePictures figure:hover del:hover {
+    transform: scale(1.1);
+}
+
+#backgroundPatterns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-gap: 1em;
+}
+#backgroundPatterns input[name="backgroundPattern"][type="radio"] {
+    appearance: none;
+    background-image: var(--bg-image);
+    border: 1px dotted black;
+    box-sizing: content-box;
+    display: inline-block;
+    height: 42px;
+    margin: 0;
+    min-height: unset;
+    min-width: unset;
+    padding: 2px;
+    width: 42px;
+}
+#backgroundPatterns input[name="backgroundPattern"][type="radio"]:checked {
+    border: 3px solid black;
+    padding: 0;
+}
+
+.iconifiedCheckbox {
+    align-self: center;
+    display: inline-flex;
+    position: relative;
+}
+.iconifiedCheckbox > input[type="checkbox"] {
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    min-width: unset;
+    position: absolute;
+}
+.iconifiedCheckbox > input[type="checkbox"] + img {
+    pointer-events: none;
+}
+.iconifiedCheckbox > input[type="checkbox"]:checked + img {
+    filter: brightness(0.5);
+}
+body[data-mystery="1"] #puzzleShowPreview {
+    pointer-events: none;
+}
+body[data-mystery="1"] #puzzleShowPreview ~ * {
+    opacity: 0.2;
+}
+
+.rangeWidget {
+    display: inline-block;
+}
+
+#menuToggler {
+    align-items: center;
+    color: gray;
+    cursor: pointer;
+    display: inline-flex;
+    padding: 0 0.5em;
+    user-select: none;
+}
+.menuToggler::after {
+    content: '⬱';
+}
+header.collapsed #menuToggler {
+    transform: scaleX(-1);
+}
+
+#puzzleParent {
+    align-items: center;
+    background-color: #888894;
+    box-sizing: border-box;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+}
+#puzzleParent figcaption {
+    animation: 2s linear 0s 1 normal reveal;
+    background-color: antiquewhite;
+    bottom: 0;
+    display: none;
+    flex-direction: column;
+    font-size: medium;
+    gap: 1em;
+    left: 50%;
+    opacity: 0;
+    padding: 0.5em;
+    position: absolute;
+    transform: translateX(-50%);
+}
+body[data-status="solved"] #puzzleParent figcaption {
+    display: inline-flex;
+    opacity: 1;
+}
+#puzzleCanvas {
+    background-color: inherit;
+    height: 100%;
+    user-select: none;
+    width: 100%;
+}
+body.nojs #puzzleCanvas {
+    display: none;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

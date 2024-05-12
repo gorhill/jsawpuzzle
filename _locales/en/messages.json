@@ -1,0 +1,193 @@
+{
+  "extName": {
+    "message": "JSaw Puzzle",
+    "description": "extension name."
+  },
+  "extShortDesc": {
+    "message": "Create and solve jigsaw puzzles",
+    "description": "short description"
+  },
+  "s100": {
+    "message": "Menu"
+  },
+  "s101": {
+    "message": "Source:"
+  },
+  "s102": {
+    "message": "Show/hide edge pieces"
+  },
+  "s103": {
+    "message": "Show/hide non-edge pieces"
+  },
+  "s104": {
+    "message": "Show/hide composite pieces"
+  },
+  "s105": {
+    "message": "Show/hide preview"
+  },
+  "s200": {
+    "message": "Picture&mldr;"
+  },
+  "s201": {
+    "message": "Library"
+  },
+  "s202": {
+    "message": "Random picture from:"
+  },
+  "s203": {
+    "message": "Wikimedia Commons <q>Featured picture</q>"
+  },
+  "s204": {
+    "message": "Fetch"
+  },
+  "s205": {
+    "message": "Wikimedia Commons <q>Picture of the day</q>"
+  },
+  "s206": {
+    "message": "Hide preview and details of unsolved pictures"
+  },
+  "s207": {
+    "message": "Mystery mode"
+  },
+  "s208": {
+    "message": "Click on a picture to create a puzzle from it."
+  },
+  "s209": {
+    "message": "PublicDomainPictures.net"
+  },
+  "s300": {
+    "message": "Puzzle&mldr;"
+  },
+  "s301": {
+    "message": "Configure your own puzzle"
+  },
+  "s302": {
+    "message": "Basic shape of pieces"
+  },
+  "s303": {
+    "message": "Square"
+  },
+  "s304": {
+    "message": "Hexagon"
+  },
+  "s305": {
+    "message": "Attachment"
+  },
+  "s306": {
+    "message": "Classic"
+  },
+  "s307": {
+    "message": "Tenon"
+  },
+  "s308": {
+    "message": "Wave"
+  },
+  "s309": {
+    "message": "None"
+  },
+  "s310": {
+    "message": "Number of pieces"
+  },
+  "s311": {
+    "message": "Level of distortion of pieces"
+  },
+  "s312": {
+    "message": "Whether pieces can be rotated"
+  },
+  "s313": {
+    "message": "No rotation"
+  },
+  "s314": {
+    "message": "Rotate 180&deg;"
+  },
+  "s315": {
+    "message": "Rotate 90&deg;"
+  },
+  "s316": {
+    "message": "Rotate freely"
+  },
+  "s317": {
+    "message": "Create"
+  },
+  "s318": {
+    "message": "<b>Beware:</b> Clicking on the &ldquo;Create&rdquo; button will cause the current jigsaw puzzle to be replaced."
+  },
+  "s319": {
+    "message": "regular"
+  },
+  "s320": {
+    "message": "irregular"
+  },
+  "s400": {
+    "message": "Settings&mldr;"
+  },
+  "s401": {
+    "message": "Appearance and behavior"
+  },
+  "s402": {
+    "message": "Snap distance"
+  },
+  "s403": {
+    "message": "Background color"
+  },
+  "s404": {
+    "message": "Background pattern"
+  },
+  "s405": {
+    "message": "Add entry to context menu"
+  },
+  "s406": {
+    "message": "Enable applause"
+  },
+  "s500": {
+    "message": "Info&mldr;"
+  },
+  "s501": {
+    "message": "Current puzzle"
+  },
+  "s502": {
+    "message": "How to play"
+  },
+  "s503": {
+    "message": "Click or press <kbd>mouse button</kbd> while hovering a piece to move it"
+  },
+  "s504": {
+    "message": "<kbd>Left</kbd> and <kbd>Right</kbd> arrows, or alternatively <kbd>A</kbd> and <kbd>D</kbd>, or <kbd>mousewheel</kbd> to rotate a piece"
+  },
+  "s505": {
+    "message": "<kbd>Up</kbd> and <kbd>Down</kbd> or alternatively <kbd>W</kbd> and <kbd>S</kbd> to send a piece behind or on top of other pieces"
+  },
+  "s506": {
+    "message": "<kbd>E</kbd> to show/hide non-edge pieces"
+  },
+  "s507": {
+    "message": "<kbd>Q</kbd> to show/hide non-composite pieces"
+  },
+  "s508": {
+    "message": "composite pieces are two or more pieces snapped together"
+  },
+  "s509": {
+    "message": "<kbd>R</kbd> to show/hide preview thumbnail"
+  },
+  "s510": {
+    "message": "<kbd>Z</kbd> to shuffle the z-order of all non-composite pieces"
+  },
+  "s511": {
+    "message": "<kbd>X</kbd> to shuffle the position of all non-composite pieces"
+  },
+  "s600": {
+    "message": "About&mldr;"
+  },
+  "s601": {
+    "message": "Portions of this software use the work of&mldr;"
+  },
+  "s602": {
+    "message": "Images:"
+  },
+  "s603": {
+    "message": "Sound effects:"
+  },
+  "s604": {
+    "message": "Software:"
+  }
+}
