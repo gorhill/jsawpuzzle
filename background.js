@@ -38,9 +38,9 @@ async function waitForTab() {
     await browser.runtime.openOptionsPage();
     const sleep = (resolve) => {
         setTimeout(async (resolve) => {
-            const contexts = await browser.runtime.getContexts({
-                contextTypes: [ 'TAB' ],
-                documentUrls: [ browser.runtime.getURL('/jsawpuzzle.html') ] ,
+            const contexts = await browser.tabs.query({
+                status: 'complete',
+                url: browser.runtime.getURL('/jsawpuzzle.html'),
             });
             if ( contexts.length !== 0 ) {
                 resolve();
