@@ -34,6 +34,7 @@ jobs:
           release_name: ${{ steps.release_info.outputs.VERSION }}
           draft: true
           prerelease: true
+          body: New release
       - name: Build extension packages
         run: |
           tools/make-chromium.sh ${{ steps.release_info.outputs.VERSION }}
