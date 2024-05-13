@@ -183,8 +183,8 @@ async function loadState() {
 /******************************************************************************/
 
 const puzzleSnaps = [
-    new Audio('./audio/snaps/12842__schluppipuppie__klick_01.wav'),
-    new Audio('./audio/snaps/12843__schluppipuppie__klick_02.wav'),
+    new Audio('./audio/snaps/12842__schluppipuppie__klick_01.mp3'),
+    new Audio('./audio/snaps/12843__schluppipuppie__klick_02.mp3'),
 ];
 
 function playSnap() {
