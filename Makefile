@@ -3,8 +3,8 @@ run_options := $(filter-out $@,$(MAKECMDGOALS))
 
 .PHONY: all clean chromium firefox
 
-sources := $(wildcard * audio/* feeds/* images/* pictures/* platform/*/* tesselations/*)
-platform := $(wildcard platform/* platform/*)
+sources := $(wildcard * src/* src/*/* src/*/*/*)
+platform := $(wildcard platform/* platform/*/*)
 
 all: chromium firefox
 
