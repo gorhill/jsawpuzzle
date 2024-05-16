@@ -69,6 +69,7 @@ const puzzleConfig = {
     showComposites: true,
     showPreview: false,
     snapDistance: 9,
+    solvedCount: 0,
 };
 
 const grabAnchor = Point.create();
@@ -216,7 +217,6 @@ function syncUIWithConfig() {
     puzzleElements.pictureFeed.value = puzzleConfig.selectedFeed;
     puzzleElements.puzzleCut.value = puzzleConfig.cut;
     puzzleElements.puzzleAttachment.value = puzzleConfig.attachment;
-    puzzleElements.puzzlePieceCount.textContent = `Number of pieces: ${thePuzzle.getNumPieces()}`;
     puzzleElements.puzzleDistortion.valueAsNumber = puzzleConfig.distortion;
     puzzleElements.puzzleRotate.value = `${puzzleConfig.numRotateSteps}`;
     puzzleElements.puzzleNumPieces.valueAsNumber = confine(
@@ -238,6 +238,8 @@ function syncUIWithConfig() {
         radio.checked = true;
     }
     puzzleElements.puzzleApplause.checked = puzzleConfig.canApplause;
+    puzzleElements.puzzlePieceCount.textContent = thePuzzle.getNumPieces();
+    puzzleElements.puzzleSolvedCount.textContent = puzzleConfig.solvedCount;
 }
 
 // Synchronize puzzle with current options
@@ -428,6 +430,12 @@ function markCurrentPuzzleAsSolved(options = {}) {
         break;
     }
     body.dataset.status = 'solved';
+    if ( options.restore !== true ) {
+        puzzleConfig.solvedCount += 1;
+        puzzleElements.puzzleSolvedCount.textContent = puzzleConfig.solvedCount;
+        saveConfig();
+    }
+
 }
 
 /******************************************************************************/
@@ -849,6 +857,9 @@ function togglePreview(show) {
 
 self.addEventListener('load', ( ) => {
     loadConfig().then(config => {
+        if ( config && config.solvedCount === undefined ) {
+            config.solvedCount = pictureset.solved.length;
+        }
         Object.assign(puzzleConfig, config || {});
         return loadState();
     }).then((selfie) => {
