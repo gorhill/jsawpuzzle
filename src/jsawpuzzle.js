@@ -1547,6 +1547,8 @@ export class Puzzle {
         this.imageSource.src = this.imageURL;
         return this.imageSource.decode().then(( ) => {
             return this.createParts();
+        }).catch(reason => {
+            console.error(reason);
         });
     }
 

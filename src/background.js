@@ -34,31 +34,9 @@ browser.action.onClicked.addListener(onToolbarIconClicked);
 
 /******************************************************************************/
 
-async function waitForTab() {
-    await browser.runtime.openOptionsPage();
-    const sleep = (resolve) => {
-        setTimeout(async (resolve) => {
-            const contexts = await browser.tabs.query({
-                status: 'complete',
-                url: browser.runtime.getURL('/jsawpuzzle.html'),
-            });
-            if ( contexts.length !== 0 ) {
-                resolve();
-            } else {
-                sleep(resolve);
-            }
-        }, 100, resolve);
-    };
-    return new Promise(resolve => {
-        sleep(resolve);
-    });
-}
-
-/******************************************************************************/
-
 async function onMenuClicked(details) {
     if ( details.menuItemId !== 'importPicture' ) { return; }
-    await waitForTab();
+    await browser.runtime.openOptionsPage();
     const { pageUrl, srcUrl } = details;
     if ( typeof srcUrl !== 'string' ) { return; }
     if ( srcUrl === '' ) { return; }
