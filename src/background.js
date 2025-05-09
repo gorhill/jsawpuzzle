@@ -34,13 +34,29 @@ browser.action.onClicked.addListener(onToolbarIconClicked);
 
 /******************************************************************************/
 
+async function sendMessage(msg) {
+    const send = (resolve, msg, tryCount) => {
+        browser.runtime.sendMessage(msg).then(( ) => {
+            resolve();
+        }).catch(( ) => {
+            tryCount -= 1;
+            return tryCount > 0
+                ? setTimeout(( ) => { send(resolve, msg, tryCount); }, 100)
+                : resolve();
+        });
+    };
+    return new Promise(resolve => {
+        send(resolve, msg, 10);
+    });
+}
+
 async function onMenuClicked(details) {
     if ( details.menuItemId !== 'importPicture' ) { return; }
     await browser.runtime.openOptionsPage();
     const { pageUrl, srcUrl } = details;
     if ( typeof srcUrl !== 'string' ) { return; }
     if ( srcUrl === '' ) { return; }
-    return browser.runtime.sendMessage({
+    return sendMessage({
         what: 'importPicture',
         imageURL: srcUrl,
         pageURL: pageUrl,
