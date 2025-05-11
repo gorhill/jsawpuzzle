@@ -77,10 +77,11 @@ function enableContextMenu() {
     }, ( ) => {
         void browser.runtime.lastError;
     });
-    browser.contextMenus.onClicked.addListener((details) => {
-        onMenuClicked(details);
-    });
 }
+
+browser.contextMenus.onClicked.addListener((details) => {
+    onMenuClicked(details);
+});
 
 function toggleContextMenu() {
     return browser.storage.local.get('enableContextMenu').then((bin) => {
