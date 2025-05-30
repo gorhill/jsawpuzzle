@@ -1549,6 +1549,7 @@ export class Puzzle {
             return this.createParts();
         }).catch(reason => {
             console.error(reason);
+            this.imageURL = '';
         });
     }
 
