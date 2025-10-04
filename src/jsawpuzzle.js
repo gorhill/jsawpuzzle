@@ -2008,6 +2008,7 @@ export class Puzzle {
     }
 
     serialize() {
+        if ( this.imageURL === '' ) { return; }
         return {
             config: this.config,
             imageURL: this.imageURL,

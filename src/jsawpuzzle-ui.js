@@ -244,7 +244,7 @@ function syncUIWithConfig() {
 
 // Synchronize puzzle with current options
 function syncPuzzleWithConfig() {
-    if ( thePuzzle.previewTile === undefined ) { return; }
+    if ( Boolean(thePuzzle.previewTile) === false ) { return; }
     thePuzzle.previewTile.hidden = puzzleConfig.showPreview === false;
 }
 
@@ -595,6 +595,12 @@ function prepareListeners() {
         const rect = puzzleElements.puzzleCanvas.getBoundingClientRect();
         return Point.create(ev.clientX - rect.left, ev.clientY - rect.top);
     };
+
+    puzzleElements.puzzleCanvas.addEventListener('touchstart', (ev) => {
+        if ( ev.target !== puzzleElements.puzzleCanvas ) { return; }
+        ev.stopPropagation();
+        ev.preventDefault();
+    });
 
     puzzleElements.puzzleCanvas.addEventListener('pointerdown', (ev) => {
         if ( ev.button !== 0 ) { return; }
