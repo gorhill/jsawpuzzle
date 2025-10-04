@@ -23,3 +23,22 @@ firefox: build/jsawpuzzle.firefox
 
 clean:
 	rm -rf build
+
+# make publish-chromium version=[github tag]
+publish-chromium:
+	node publish-extension/publish-chromium.js \
+		ghowner=gorhill \
+		ghrepo=jsawpuzzle \
+		ghtag=$(version) \
+		ghasset=chromium \
+		storeid=ikmogfgjninnidjikclffnfcblehkbak
+
+# make publish-firefox version=[github tag]
+publish-firefox:
+	node publish-extension/publish-firefox.js \
+		ghowner=gorhill \
+		ghrepo=jsawpuzzle \
+		ghtag=$(version) \
+		ghasset=firefox \
+		storeid=jsawpuzzle@raymondhill.net \
+		channel=listed
