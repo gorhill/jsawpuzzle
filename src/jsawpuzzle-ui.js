@@ -30,6 +30,13 @@ import { safeInsertAdjacentHTML } from './dom-utils.js';
 
 const browser = self.browser || self.chrome;
 
+{
+    const manifest = browser.runtime.getManifest();
+    document.querySelector('version').textContent = manifest.version;
+}
+
+/******************************************************************************/
+
 const stockPictures = [{
     hash: 'stock1',
     sourceURL: 'https://commons.wikimedia.org/wiki/File:Cape_Town_(ZA),_Wale_Street_--_2024_--_3544.jpg',
@@ -72,6 +79,7 @@ const puzzleConfig = {
     solvedCount: 0,
 };
 
+const MAX_ENTRIES = 1000;
 const grabAnchor = Point.create();
 const baseCount = 15;
 let thePuzzle = null;
@@ -340,7 +348,7 @@ async function fetchRandomPicture(source) {
         module = await import(`./feeds/publicdomainpictures.js`);
         break;
     }
-    const picture = await module.getRandomPicture();
+    const picture = await module.getRandomPicture(pictureset);
     if ( picture instanceof Object === false ) { return; }
     picture.time = Date.now();
     pictureset.available.set(picture.hash, picture);
@@ -371,6 +379,20 @@ async function importPicture(details) {
     puzzleConfig.imageURL = imageURL;
     puzzleConfig.imageHash = imageHash;
     preparePuzzle(puzzleConfig);
+}
+
+function prunePictureset() {
+    while ( pictureset.solved.length > MAX_ENTRIES ) {
+        const hash = pictureset.solved.shift();
+        pictureset.available.delete(hash);
+        const figure = puzzleElements?.puzzlePictures?.querySelector(`figure[data-hash="${hash}"]`);
+        if ( figure ) {
+            figure.remove();
+        }
+    }
+    if ( pictureset.discarded.length > MAX_ENTRIES ) {
+        pictureset.discarded = pictureset.discarded.slice(-MAX_ENTRIES);
+    }
 }
 
 /******************************************************************************/
@@ -415,9 +437,7 @@ function markCurrentPuzzleAsSolved(options = {}) {
         if ( pictureset.available.has(hash) ) {
             if ( pictureset.solved.includes(hash) === false ) {
                 pictureset.solved.push(hash);
-                if ( pictureset.solved.length > 1000 ) {
-                    pictureset.solved = pictureset.solved.slice(0, 1000);
-                }
+                prunePictureset();
             }
         }
         toLocalStorage('pictureset', s14e.serialize(pictureset));
@@ -474,8 +494,8 @@ function prepareListeners() {
             pictureset.available.delete(hash);
             if ( pictureset.discarded.includes(hash) === false ) {
                 pictureset.discarded.push(hash);
-                if ( pictureset.discarded.length > 1000 ) {
-                    pictureset.discarded = pictureset.discarded.slice(0, 1000);
+                if ( pictureset.discarded.length > MAX_ENTRIES ) {
+                    pictureset.discarded = pictureset.discarded.slice(-MAX_ENTRIES);
                 }
             }
             const i = pictureset.solved.indexOf(hash);
