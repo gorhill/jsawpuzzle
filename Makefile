@@ -42,3 +42,12 @@ publish-firefox:
 		ghasset=firefox \
 		storeid=jsawpuzzle@raymondhill.net \
 		channel=listed
+
+upload-firefox:
+	node publish-extension/upload-firefox.js \
+		ghowner=gorhill \
+		ghrepo=jsawpuzzle \
+		ghtag=$(version) \
+		ghasset=firefox \
+		storeid=jsawpuzzle@raymondhill.net \
+		channel=listed
