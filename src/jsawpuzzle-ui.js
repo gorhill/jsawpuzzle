@@ -35,6 +35,13 @@ const browser = self.browser || self.chrome;
     document.querySelector('version').textContent = manifest.version;
 }
 
+{
+    const query = self.matchMedia('(hover: hover)');
+    if ( query.matches ) {
+        document.body.classList.add('can-hover');
+    }
+}
+
 /******************************************************************************/
 
 const stockPictures = [{
@@ -629,6 +636,7 @@ function prepareListeners() {
             return;
         }
         const target = ev.target;
+        target.focus();
         const pos = normalizeEventPos(ev);
         // Grab a piece
         grabbedPart = hoveredPart = thePuzzle.partUnderPoint(pos);

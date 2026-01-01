@@ -10,6 +10,7 @@
 
 <body class="nojs">
   <header id="navbar">
+    <div id="menuToggler" class="menuToggler" tabindex="0"></div>
     <!-- Menu items -->
     <div class="menuroot">
       <span class="menulabel" tabindex="0" data-i18n="s100"></span>
@@ -175,7 +176,7 @@
             <p data-i18n="s601"></p>
             <ul>
               <li data-i18n="s602">
-                <ul>
+                <ul class="smaller">
                   <li><a href="https://commons.wikimedia.org/wiki/File:Cape_Town_(ZA),_Wale_Street_--_2024_--_3544.jpg">&ldquo;Colorful houses in Wale Street, Cape Town, Western Cape, South Africa (2024)&rdquo;</a>, <a href="https://www.wikidata.org/wiki/Q34788025">Dietmar Rabich</a></li>
                 </ul>
               </li>
@@ -189,7 +190,7 @@
                 </ul>
               </li>
               <li data-i18n="s604">
-                <ul>
+                <ul class="smaller">
                   <li><a href="https://paulbourke.net/geometry/polygonmesh/">&ldquo;Calculating the area and centroid of a polygon&rdquo;</a>, <a href="https://paulbourke.net/">Paul Bourke</a></li>
                 </ul>
               </li>
@@ -216,11 +217,10 @@
         <img src="./images/puzzle-preview-unselected.png" alt="s105" />
       </span>
     </div>
-    <div id="menuToggler" class="menuToggler"></div>
   </header>
 
   <div id="puzzleParent">
-    <canvas id="puzzleCanvas"></canvas>
+    <canvas id="puzzleCanvas" tabindex="0"></canvas>
   </div>
 
   <div id="templates" class="hidden">

@@ -26,10 +26,6 @@ kbd {
     padding: 0 4px;
 }
 
-li {
-    padding: 0.25em 0;
-}
-
 figcaption a {
     word-break: break-all;
 }
@@ -57,7 +53,8 @@ header {
 body.nojs header {
     display: none;
 }
-header.collapsed:not(:hover,:focus-within) > :not(#menuToggler) {
+body.can-hover header:not(:hover,:focus-within) > :not(#menuToggler),
+body:not(.can-hover) header:not(:focus-within) > :not(#menuToggler) {
     max-width: 0;
     visibility: hidden;
 }
@@ -68,42 +65,43 @@ header.collapsed:not(:hover,:focus-within) > :not(#menuToggler) {
 
 .menuroot {
     display: flex;
-    position: relative;
 }
-.menuroot:hover .menu,
+body.can-hover .menuroot:hover .menu,
 .menuroot:focus-within .menu {
     display: flex;
-}
-.menuroot:focus-within > .menulabel {
-    font-weight: bold;
 }
 
 .menu {
     background-color: antiquewhite;
     box-shadow: 0px 0px 8px #888;
     display: none;
-    flex-direction: column;
+    left: 1em;
     margin: 0;
-    padding: 0;
+    padding: 2px;
     position: absolute;
-    top: 100%;
+    top: 90%;
     z-index: 100;
 }
 .menu > .menuitem {
     list-style: none;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
 }
 .menuroot > .menulabel,
 .menuitem > .menulabel {
     align-items: center;
+    cursor: default;
     display: inline-flex;
     font-size: large;
-    min-width: 8em;
     padding: 0.5em 1em;
+    user-select: none;
 }
-.menuroot > .menulabel:hover,
-.menuitem:hover {
+.menuitem > .menulabel {
+    padding-bottom: 0.8em;
+    padding-top: 0.8em;
+}
+body.can-hover .menuroot:hover,
+body.can-hover .menuitem:hover,
+.menuroot:focus-within,
+.menu:focus-within > li:focus-within {
     background-color: #0001;
 }
 section {
@@ -111,6 +109,7 @@ section {
     box-shadow: 0px 0px 8px #888;
     border: 1px solid gray;
     display: none;
+    left: 1em;
     max-height: 75vh;
     min-height: 100%;
     min-width: min(600px, 70vw);
@@ -118,17 +117,11 @@ section {
     overflow: auto;
     padding: 1em;
     position: absolute;
-    top: 0;
+    top: 90%;
 }
-.menu:not(:focus-within) > li:hover section.submenu,
+body.can-hover .menu:not(:focus-within) > li:hover section.submenu,
 .menu:focus-within > li:focus-within section.submenu {
     display: inline-block;
-}
-.menu:focus-within > li:focus-within .menulabel {
-    font-weight: bold;
-}
-.menuitem:focus-within > .menulabel {
-    font-weight: bold;
 }
 
 .paneGrid {
@@ -191,7 +184,7 @@ button {
     float: left;
     height: auto;
     margin-inline-end: 1em;
-    max-width: 300px;
+    max-width: min(300px, 50%);
     width: auto;
 }
 body[data-mystery="1"] #puzzlePictures figure:not([data-solved]) > img {
@@ -213,7 +206,7 @@ figcaption > *:last-of-type {
 figure del {
     background-color: antiquewhite;
     bottom: 0;
-    cursor: pointer;
+    cursor: default;
     display: none;
     font-size: 3em;
     justify-content: flex-end;
@@ -223,10 +216,13 @@ figure del {
     text-decoration: none;
     user-select: none;
 }
-#puzzlePictures figure:not([data-hash^="stock"]):hover del {
+body:not(.can-hover) #puzzlePictures figure:not([data-hash^="stock"]) del {
     display: inline-flex;
 }
-#puzzlePictures figure:hover del:hover {
+body.can-hover #puzzlePictures figure:not([data-hash^="stock"]):hover del {
+    display: inline-flex;
+}
+body.can-hover #puzzlePictures figure:hover del:hover {
     transform: scale(1.1);
 }
 
@@ -288,16 +284,14 @@ body[data-mystery="1"] #puzzleShowPreview ~ * {
 #menuToggler {
     align-items: center;
     color: gray;
-    cursor: pointer;
+    cursor: default;
     display: inline-flex;
-    padding: 0 0.5em;
+    padding: 0 0.25em;
+    transform: scaleX(-1);
     user-select: none;
 }
 .menuToggler::after {
     content: '⬱';
-}
-header.collapsed #menuToggler {
-    transform: scaleX(-1);
 }
 
 #puzzleParent {
