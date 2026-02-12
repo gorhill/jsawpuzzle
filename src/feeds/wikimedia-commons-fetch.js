@@ -22,6 +22,16 @@
 
 /******************************************************************************/
 
+// https://www.mediawiki.org/wiki/Common_thumbnail_sizes
+const validWidths = [ 20, 40, 60, 120, 250, 330, 500, 960, 1280, 1920, 3840 ];
+
+function lookupWidth(targetWidth) {
+    for ( const w of validWidths ) {
+        if ( w > targetWidth ) { return w; }
+    }
+    return validWidths.at(-1);
+}
+
 export async function hashFromURL(href) {
     const encoder = new TextEncoder();
     const data = encoder.encode(href);
@@ -79,13 +89,13 @@ export async function fetchPicture(fileURL) {
     const thumbURL = [
         defaultURL.href.slice(0, match.index),
         match[1],
-        '/300px-',
+        '/330px-',
         match[1],
     ].join('');
     const imageURL = [
         defaultURL.href.slice(0, match.index),
         match[1], '/',
-        `${optimalWidth}px-`,
+        `${lookupWidth(optimalWidth)}px-`,
         match[1],
     ].join('');
     const caption = doc.querySelector('.description[lang="en"]');
