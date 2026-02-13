@@ -35,12 +35,13 @@ const browser = self.browser || self.chrome;
     document.querySelector('version').textContent = manifest.version;
 }
 
-{
+const canHover = (( ) => {
     const query = self.matchMedia('(hover: hover)');
     if ( query.matches ) {
         document.body.classList.add('can-hover');
     }
-}
+    return query.matches;
+})();
 
 /******************************************************************************/
 
@@ -48,8 +49,8 @@ const stockPictures = [{
     hash: 'stock1',
     sourceURL: 'https://commons.wikimedia.org/wiki/File:Cape_Town_(ZA),_Wale_Street_--_2024_--_3544.jpg',
     imageRatio: 1.777777778,
-    thumbURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Cape_Town_%28ZA%29%2C_Wale_Street_--_2024_--_3544.jpg/300px-Cape_Town_%28ZA%29%2C_Wale_Street_--_2024_--_3544.jpg',
-    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Cape_Town_%28ZA%29%2C_Wale_Street_--_2024_--_3544.jpg/1600px-Cape_Town_%28ZA%29%2C_Wale_Street_--_2024_--_3544.jpg',
+    thumbURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Cape_Town_%28ZA%29%2C_Wale_Street_--_2024_--_3544.jpg/330px-Cape_Town_%28ZA%29%2C_Wale_Street_--_2024_--_3544.jpg',
+    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Cape_Town_%28ZA%29%2C_Wale_Street_--_2024_--_3544.jpg/1920px-Cape_Town_%28ZA%29%2C_Wale_Street_--_2024_--_3544.jpg',
     caption: 'Colorful houses in Wale Street, Cape Town, Western Cape, South Africa (2024)',
     time: 0,
 }];
@@ -339,6 +340,32 @@ fromLocalStorage('pictureset').then(s => {
     for ( const picture of stockPictures ) {
         pictureset.available.set(picture.hash, picture);
     }
+    return fromLocalStorage('1.10fix');
+}).then(r => {
+    if ( r ) { return; }
+    const validWidths = [ 20, 40, 60, 120, 250, 330, 500, 960, 1280, 1920, 3840 ];
+    const lookupWidth = targetWidth => {
+        for ( const w of validWidths ) {
+            if ( w > targetWidth ) { return w; }
+        }
+        return validWidths.at(-1);
+    };
+    const reValidURL = new RegExp(`\\/${validWidths.join('|')}px-`);
+    const updatePictureURL = url => {
+        if ( url.startsWith('https://upload.wikimedia.org') === false ) { return; }
+        if ( reValidURL.test(url) ) { return; }
+        const match = reWidth.exec(url);
+        if ( match === null ) { return; }
+        const w = lookupWidth(parseInt(match[1]), 10);
+        return url.replace(reWidth, `/${w}px-`);
+    };
+    const reWidth = /\/(\d+)px-/;
+    for ( const picture of pictureset.available.values() ) {
+        picture.thumbURL = updatePictureURL(picture.thumbURL) || picture.thumbURL;
+        picture.imageURL = updatePictureURL(picture.imageURL) || picture.imageURL;
+    }
+    toLocalStorage('1.10fix', true);
+}).then(( ) => {
     populatePictureset();
 });
 
