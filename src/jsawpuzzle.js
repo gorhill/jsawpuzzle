@@ -963,9 +963,11 @@ class PuzzlePart {
 class PuzzlePiece extends PuzzlePart {
     static idGenerator = 1;
 
+    highlighted = false;
+    piece = true;
+
     constructor() {
         super();
-        this.piece = true;
     }
 
     getBbox() {
@@ -1014,8 +1016,15 @@ class PuzzlePiece extends PuzzlePart {
     }
 
     draw(ctx) {
+        if ( this.highlighted ) {
+            ctx.save();
+            ctx.filter = 'brightness(120%)';
+        }
         const dTopleft = this.getDisplayBbox().getTopleft();
         ctx.drawImage(this.displayCanvas, dTopleft.x, dTopleft.y);
+        if ( this.highlighted ) {
+            ctx.restore();
+        }
     }
 
     pointIn(p) {
@@ -1071,7 +1080,7 @@ class PuzzlePiece extends PuzzlePart {
         this.setDisplayPos(displayPos);
     }
 
-    snapPiece(other, snapDistance = 7) {
+    canSnapPiece(other, snapDistance = 7) {
         // do not snap with self..
         if ( other.id === this.id ) { return false; }
         // display angle steps must be the same
@@ -1090,23 +1099,28 @@ class PuzzlePiece extends PuzzlePart {
                 const ydistance = thisSide.ptB.y - otherSide.ptA.y;
                 if ( absFn(xdistance) > snapDistance ) { continue; }
                 if ( absFn(ydistance) > snapDistance ) { continue; }
-                // merge pieces: we want the merged piece to be the one moving
-                // into position.
-                const otherPos = other.getDisplayPos().clone();
-                otherPos.offset(xdistance, ydistance);
-                other.setDisplayPos(otherPos);
-                const topleftBefore = this.getBbox().union(other.getBbox()).getTopleft();
-                this.merge([ other ]);
-                const topleftAfter = this.getBbox().getTopleft();
-                const thisPos = this.getDisplayPos();
-                this.setDisplayPos(
-                    thisPos.x - (topleftAfter.x - topleftBefore.x),
-                    thisPos.y - (topleftAfter.y - topleftBefore.y),
-                );
-                return true;
+                return { xdistance, ydistance };
             }
         }
-        return false;
+    }
+
+    snapPiece(other, snapDistance = 7) {
+        const details = this.canSnapPiece(other, snapDistance);
+        if ( details === undefined ) { return false; }
+        // merge pieces: we want the merged piece to be the one moving
+        // into position.
+        const otherPos = other.getDisplayPos().clone();
+        otherPos.offset(details.xdistance, details.ydistance);
+        other.setDisplayPos(otherPos);
+        const topleftBefore = this.getBbox().union(other.getBbox()).getTopleft();
+        this.merge([ other ]);
+        const topleftAfter = this.getBbox().getTopleft();
+        const thisPos = this.getDisplayPos();
+        this.setDisplayPos(
+            thisPos.x - (topleftAfter.x - topleftBefore.x),
+            thisPos.y - (topleftAfter.y - topleftBefore.y),
+        );
+        return true;
     }
 
     recalc() {
@@ -1794,7 +1808,7 @@ export class Puzzle {
     draw(clip) {
         const ctx = this.canvas.getContext('2d');
         ctx.save();
-        // comment out to verify minimal redrawing
+        // uncomment to verify minimal redrawing
         //ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         // draw only what intersect with clip region
         if ( clip ) {
@@ -1904,39 +1918,60 @@ export class Puzzle {
         return r;
     }
 
+    highlight(...targets) {
+        const clip = Bbox.create();
+        for ( const part of this.drawingStack ) {
+            if ( part.piece !== true ) { continue; }
+            if ( part.hidden ) { continue; }
+            const state = targets.includes(part);
+            if ( part.highlighted === state ) { continue; }
+            part.highlighted = state;
+            clip.union(part.getBbox());
+        }
+        if ( clip.isEmpty() ) { return; }
+        this.draw(clip);
+    }
+
+    canSnapPiece(target) {
+        const { snapDistance } = this.config;
+        const targetBbox = target.getBbox().clone();
+        targetBbox.grow(snapDistance);
+        for ( const part of this.drawingStack ) {
+            // skip self
+            if ( part === target ) { continue; }
+            // consider only puzzle piece (leaving other puzzle parts)
+            if ( part.piece !== true ) { continue; }
+            // ignore hidden piece
+            if ( part.hidden ) { continue; }
+            // angle must be same
+            if ( part.getAngleStep() !== target.getAngleStep() ) { continue; }
+            // coarse test
+            if ( !targetBbox.doesIntersect(part.getBbox()) ) { continue; }
+            // test if it's a match
+            if ( !part.canSnapPiece(target, snapDistance) ) { continue; }
+            return { part };
+        }
+    }
+
     // check whether a piece snaps onto another one
     snapPiece(target) {
         const pieceCount = this.drawingStack.length;
+        const { snapDistance } = this.config;
         for (;;) {
-            const beforeCount = this.drawingStack.length;
-            const targetBbox = target.getBbox().clone();
-            const { snapDistance } = this.config;
-            targetBbox.grow(snapDistance);
-            for ( const part of this.drawingStack ) {
-                // skip self
-                if ( part === target ) { continue; }
-                // consider only puzzle piece (leaving other puzzle parts)
-                if ( part.piece !== true ) { continue; }
-                // ignore hidden piece
-                if ( part.hidden ) { continue; }
-                // angle must be same
-                if ( part.getAngleStep() !== target.getAngleStep() ) { continue; }
-                // coarse test
-                if ( !targetBbox.doesIntersect(part.getBbox()) ) { continue; }
-                // test if it's a match
-                if ( !part.snapPiece(target, snapDistance) ) { continue; }
-                // pieces fit together
-                // remember which pieces are clustered together, for persistence
-                this.composites.set(part.id, part);
-                this.composites.delete(target.id);
-                // get rid of merged piece
-                const i = this.drawingStack.indexOf(target);
-                if ( i >= 0 ) {
-                    this.drawingStack.splice(i, 1);
-                }
-                target = part;
+            const details = this.canSnapPiece(target);
+            if ( details === undefined ) { break; }
+            const { part }  = details;
+            part.snapPiece(target, snapDistance);
+            // pieces fit together
+            // remember which pieces are clustered together, for persistence
+            this.composites.set(part.id, part);
+            this.composites.delete(target.id);
+            // get rid of merged piece
+            const i = this.drawingStack.indexOf(target);
+            if ( i >= 0 ) {
+                this.drawingStack.splice(i, 1);
             }
-            if ( this.drawingStack.length === beforeCount ) { break; }
+            target = part;
         }
         if ( this.drawingStack.length === pieceCount ) { return false; }
         this.snapPartToBed(target);

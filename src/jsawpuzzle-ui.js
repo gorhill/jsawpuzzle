@@ -132,6 +132,32 @@ const messaging = new Messaging();
 
 /******************************************************************************/
 
+function snapDetectStart() {
+    thePuzzle.highlight();
+    snapDetectReset();
+    if ( grabbedPart === null ) { return; }
+    snapDetectStart.snapDetectTimer = setTimeout(snapDetectStart.callback, 997);
+}
+
+snapDetectStart.snapDetectTimer = undefined;
+snapDetectStart.callback = ( ) => {
+    snapDetectStart.snapDetectTimer = undefined;
+    if ( grabbedPart === null ) { return; }
+    const details = thePuzzle.canSnapPiece(grabbedPart);
+    if ( details === undefined ) { return; }
+    playTick();
+    thePuzzle.highlight(grabbedPart);
+};
+
+function snapDetectReset() {
+    thePuzzle.highlight();
+    if ( snapDetectStart.snapDetectTimer === undefined ) { return; }
+    clearTimeout(snapDetectStart.snapDetectTimer);
+    snapDetectStart.snapDetectTimer = undefined;
+}
+
+/******************************************************************************/
+
 function toLocalStorage(key, s) {
     return chrome.storage.local.set({ [key]: s }).catch((reason) => {
         console.log(reason);
@@ -207,6 +233,13 @@ const puzzleSnaps = [
 function playSnap() {
     const i = floorFn(randFn() * puzzleSnaps.length);
     puzzleSnaps[i].play();
+}
+
+function playTick() {
+    if ( playTick.tick === undefined ) {
+        playTick.tick = new Audio('./audio/566887__lennartgreen__click-metronome-atonal-low.wav');
+    }
+    playTick.tick.play();
 }
 
 const puzzleClaps = [
@@ -686,6 +719,7 @@ function prepareListeners() {
         ev.target.releasePointerCapture(ev.pointerId);
         if ( partMoved === false ) { return; }
         if ( (Date.now() - mouseDownTime) < 250 ) { return; }
+        snapDetectReset();
         const target = ev.target;
         const pos = normalizeEventPos(ev);
         // Ungrab a piece
@@ -721,6 +755,7 @@ function prepareListeners() {
             pos.y - grabAnchor.y
         );
         partMoved = true;
+        snapDetectStart();
     }, { passive: true });
 
     // mouse wheel handling: http://adomas.org/javascript-mouse-wheel/
