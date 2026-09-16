@@ -52,7 +52,7 @@ async function getCandidates(year, group) {
         const img = box.querySelector('img.mw-file-element');
         if ( img === null ) { continue; }
         const thumbURL = String(new URL(img.getAttribute('src'), url));
-        const match = /([^/]+)\/(\d+)px-\1$/.exec(thumbURL);
+        const match = /([^/]+)\/(\d+)px-\1(\?|$)/.exec(thumbURL);
         if ( match === null ) { continue; }
         out.push(candidateURL);
     }

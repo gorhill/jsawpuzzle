@@ -98,7 +98,7 @@ export async function fetchPicture(fileURL) {
         `${lookupWidth(optimalWidth)}px-`,
         match[1],
     ].join('');
-    const caption = doc.querySelector('.description[lang="en"]');
+    const caption = doc.querySelector('.description[lang="en"],.description[lang]');
     const span = caption.querySelector('span.language.en');
     if ( span ) { span.remove(); }
     return {
